@@ -99,7 +99,7 @@ namespace MovieCharactersWebAPI.Controllers
 
             _context.Franchise.Remove(franchise);
             await _context.SaveChangesAsync();
-
+            
             return NoContent();
         }
 
@@ -107,5 +107,51 @@ namespace MovieCharactersWebAPI.Controllers
         {
             return _context.Franchise.Any(e => e.Id == id);
         }
+
+        [HttpGet("{id}/Movies")]
+        public async Task<IActionResult> UpdateMoviesFranchise(int id, List<int> movies)
+        {
+            if (!FranchiseExists(id))
+            {
+                return BadRequest();
+            }
+
+
+            //Getting the franchise with id from request
+            Franchise franchise = await _context.Franchise
+                .Include(f => f.Movies)
+                .Where(i => i.Id == id)
+                .FirstAsync();
+
+            //Making a new list of movies for adding to the Movies collection for Franchise
+            List<Movie> newListMovies = new List<Movie>();
+
+            //looping through the list of movie id's
+            foreach (int tempId in movies)
+            {
+
+                //Getting the movie with the movie id
+                Movie movieExist = await _context.Movie.FindAsync(tempId);
+
+                //if the movie dont exist - return BadRequest
+                if (movieExist == null) {
+                    return BadRequest();
+                }
+
+                //Changing the franchise id for the movie
+                movieExist.FranchiseId = id;
+
+                //adding the the movie to the newMovieList
+                newListMovies.Add(movieExist);
+
+            }
+
+            //Adding the new movielist to the collection of movies for franchise 
+            franchise.Movies = newListMovies;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
     }
 }

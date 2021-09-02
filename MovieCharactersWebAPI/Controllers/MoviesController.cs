@@ -108,36 +108,54 @@ namespace MovieCharactersWebAPI.Controllers
             return _context.Movie.Any(e => e.Id == id);
         }
 
-        [HttpPut("{id}/Characters")]
-        public async Task<IActionResult> UpdateMovieCharcters(int id, List<int> characters) {
+        [HttpGet("{id}/Characters")]
+        public async Task<IActionResult> UpdateMovieCharacters(int id, List<int> characters) {
             try {
 
                 if (!MovieExists(id))
                 {
-                    return BadRequest("Movie ismatch ID");
+                    return BadRequest("Movie mismatch ID");
                 }
 
-                //lag en funksjon i Movie repository
+                //Retriving the Movie object we want to update
+                Movie movieToUpdate = await _context.Movie
+               .Include(c => c.Characters)
+               .Where(i => i.Id == id)
+               .FirstAsync();
 
+                //The new lists of character
+                List<Character> newlistCharacter = new List<Character>();
 
+                //Id in character list sent inn
+                foreach (int Id in characters) {
 
-            } catch (Exception)
+                    //Character object to check for if the character exist 
+                    Character existCharacter = await _context.Character.FindAsync(Id);
+
+                    //if it does not - return bad request
+                    if (existCharacter == null) {
+                        return BadRequest();
+                    }
+                    //if it exist add it the character to newListCharacter
+                    newlistCharacter.Add(existCharacter);
+                
+                }
+                //Add the new list to the movie objects character column
+                movieToUpdate.Characters = newlistCharacter;
+
+            }
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                  "Error updating data");
             }
-            
 
-
-            
+            //save the changes to db
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        [HttpPut("{id}/Franchise")]
-        public async Task<IActionResult> UpdateMovieFranchise(int id, List<int> franchise)
-        {
-            return NoContent();
-        }
+        
     }
 }
