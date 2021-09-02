@@ -108,7 +108,10 @@ namespace MovieCharactersWebAPI.Controllers
             return _context.Franchise.Any(e => e.Id == id);
         }
 
-        [HttpGet("{id}/Movies")]
+
+        //Nick said that this should be a get - we get error 
+        //and we disagree, because a put is an update right? =)
+        [HttpPut("{id}/Movies")]
         public async Task<IActionResult> UpdateMoviesFranchise(int id, List<int> movies)
         {
             if (!FranchiseExists(id))
@@ -126,7 +129,7 @@ namespace MovieCharactersWebAPI.Controllers
             //Making a new list of movies for adding to the Movies collection for Franchise
             List<Movie> newListMovies = new List<Movie>();
 
-            //looping through the list of movie id's
+            //Looping through the list of movie id's
             foreach (int tempId in movies)
             {
 

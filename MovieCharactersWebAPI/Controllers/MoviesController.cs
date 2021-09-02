@@ -108,7 +108,9 @@ namespace MovieCharactersWebAPI.Controllers
             return _context.Movie.Any(e => e.Id == id);
         }
 
-        [HttpGet("{id}/Characters")]
+        //Nick said that this should be a get - we get error 
+        //and we disagree, because a put is an update right? =)
+        [HttpPut("{id}/Characters")]
         public async Task<IActionResult> UpdateMovieCharacters(int id, List<int> characters) {
             try {
 
