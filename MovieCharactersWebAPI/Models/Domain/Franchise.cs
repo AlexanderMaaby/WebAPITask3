@@ -17,6 +17,9 @@ namespace MovieCharactersWebAPI.Models
         public string Name { get; set; }
         [MaxLength(100)]
         public string Description { get; set; }
+        /// <summary>
+        /// One-to-Many relationship between Franchise and Movie (many Movie can be apart of one Franchise)
+        /// </summary>
         public ICollection<Movie> Movies { get; set; }
     }
 }

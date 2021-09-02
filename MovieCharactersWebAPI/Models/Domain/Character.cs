@@ -16,7 +16,7 @@ namespace MovieCharactersWebAPI.Models
         public string Alias{ get; set; }
         [MaxLength(50)]
         public string Gender { get; set; }
-        [MaxLength(100)]
+        [Url]
         public string PictureUrl { get; set; }
 
         /// <summary>

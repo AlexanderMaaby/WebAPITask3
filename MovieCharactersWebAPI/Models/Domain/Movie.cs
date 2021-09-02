@@ -20,9 +20,9 @@ namespace MovieCharactersWebAPI.Models
         public string Genre { get; set; }
         
         public int ReleaseYear { get; set; }
-        [MaxLength(100)]
+        [Url]
         public string PictureUrl { get; set; }
-        [MaxLength(100)]
+        [Url]
         public string TrailerUrl { get; set; }
 
         /// <summary>
