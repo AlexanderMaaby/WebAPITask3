@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCharactersWebAPI.Models;
+using MovieCharactersWebAPI.Models.DTO.CharacterDTO;
 
 namespace MovieCharactersWebAPI.Controllers
 {
@@ -180,7 +181,30 @@ namespace MovieCharactersWebAPI.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+        /// <summary>
+        /// Get characters in a movie.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}/Characters")]
+        public async Task<ActionResult<Character>> GetCharacatersInMovie(int id)
+        {
+            // Make response object
+            List<Character> response = new();
+            Movie movie = await _context.Movie.Include(c => c.Characters).Where(m => m.Id == id).FirstOrDefaultAsync();
+            if (movie == null)
+            {
+                return NotFound(response);
+            }
+            foreach (Character character in movie.Characters)
+            {
+                response.Add(character);
+                character.Movies = null;
+            }
+            // Map to dto
+            return Ok(response);
+        }
 
-        
+
     }
 }

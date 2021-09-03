@@ -92,6 +92,7 @@ namespace MovieCharactersWebAPI.Controllers
                 .SelectMany(m => m.Characters)
                 .Distinct()
                 .ToListAsync();
+
             if (characters == null)
             {
                 return NotFound();
@@ -212,13 +213,10 @@ namespace MovieCharactersWebAPI.Controllers
                 if (movieExist == null) {
                     return BadRequest();
                 }
-
                 //Changing the franchise id for the movie
                 movieExist.FranchiseId = id;
-
                 //adding the the movie to the newMovieList
                 newListMovies.Add(movieExist);
-
             }
 
             //Adding the new movielist to the collection of movies for franchise 
@@ -227,6 +225,5 @@ namespace MovieCharactersWebAPI.Controllers
 
             return NoContent();
         }
-
     }
 }
