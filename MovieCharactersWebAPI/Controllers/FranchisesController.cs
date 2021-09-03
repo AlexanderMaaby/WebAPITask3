@@ -11,6 +11,9 @@ using MovieCharactersWebAPI.Models.DTO;
 
 namespace MovieCharactersWebAPI.Controllers
 {
+    /// <summary>
+    /// Controller class for Franchises.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class FranchisesController : ControllerBase
@@ -25,14 +28,21 @@ namespace MovieCharactersWebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Franchises
+        /// <summary>
+        /// Gets all Franchises in the DTO.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FranchiseDTO>>> GetFranchise()
         {
             return _mapper.Map<List<FranchiseDTO>>(await _context.Franchise.ToListAsync());
         }
 
-        // GET: api/Franchises/5
+        /// <summary>
+        /// Gets a single Franchise from the database.
+        /// </summary>
+        /// <param name="id">The Id of the requested franchise.</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Franchise>> GetFranchise(int id)
         {
@@ -46,7 +56,6 @@ namespace MovieCharactersWebAPI.Controllers
             return franchise;
         }
 
-        // PUT: api/Franchises/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
@@ -55,9 +64,7 @@ namespace MovieCharactersWebAPI.Controllers
             {
                 return BadRequest();
             }
-
             _context.Entry(franchise).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -73,7 +80,6 @@ namespace MovieCharactersWebAPI.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
