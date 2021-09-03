@@ -40,7 +40,7 @@ namespace MovieCharactersWebAPI
                 { 
                     Title = "MovieCharactersWebAPI", 
                     Version = "v1" ,
-                    Description = "A simple example ASP.NET Core Web API",
+                    Description = "A simple example ASP.NET Core Web API for assignment 3 Noroff 2021 =)",
                     Contact = new OpenApiContact
                     {
                         Name = "Mia Kristiansen and Alexander Maaby",
