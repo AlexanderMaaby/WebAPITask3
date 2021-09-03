@@ -59,7 +59,12 @@ namespace MovieCharactersWebAPI.Controllers
 
             return franchise;
         }
-
+        /// <summary>
+        /// Update a franchise in the database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="franchise"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
@@ -87,7 +92,11 @@ namespace MovieCharactersWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Franchises
+        /// <summary>
+        /// Add a franchise to the database.
+        /// </summary>
+        /// <param name="franchise"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
@@ -98,7 +107,11 @@ namespace MovieCharactersWebAPI.Controllers
             return CreatedAtAction("GetFranchise", new { id = franchise.Id }, franchise);
         }
 
-        // DELETE: api/Franchises/5
+        /// <summary>
+        /// Delete a franchise from the database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
         {
@@ -119,7 +132,12 @@ namespace MovieCharactersWebAPI.Controllers
             return _context.Franchise.Any(e => e.Id == id);
         }
 
-
+        /// <summary>
+        /// Update all the movies in a given franchise. 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="movies"></param>
+        /// <returns></returns>
         //Nick said that this should be a get - we get error 
         //and we disagree, because a put is an update right? =)
         [HttpPut("{id}/Movies")]
@@ -129,7 +147,6 @@ namespace MovieCharactersWebAPI.Controllers
             {
                 return BadRequest();
             }
-
 
             //Getting the franchise with id from request
             Franchise franchise = await _context.Franchise
