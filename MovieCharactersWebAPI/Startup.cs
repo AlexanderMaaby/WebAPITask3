@@ -34,7 +34,17 @@ namespace MovieCharactersWebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MovieCharactersWebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { 
+                    Title = "MovieCharactersWebAPI", 
+                    Version = "v1" ,
+                    Description = "A simple example ASP.NET Core Web API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Mia Kristiansen and Alexander Maaby",
+                        Email = string.Empty,
+                        Url = new Uri("https://lmgtfy.app/?q=rickroll"),
+                    },
+                });
             });
             
             //adding dbcontext for default config on startup

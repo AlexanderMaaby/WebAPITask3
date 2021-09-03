@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,8 @@ namespace MovieCharactersWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     public class CharactersController : ControllerBase
     {
         private readonly MovieCharacterDbContext _context;
