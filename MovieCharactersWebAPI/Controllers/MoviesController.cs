@@ -11,6 +11,9 @@ using MovieCharactersWebAPI.Models;
 
 namespace MovieCharactersWebAPI.Controllers
 {
+    /// <summary>
+    /// Controller class for Movies.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
@@ -28,14 +31,21 @@ namespace MovieCharactersWebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Movies
+        /// <summary>
+        /// Get all the movies in the database.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovie()
         {
             return await _context.Movie.ToListAsync();
         }
 
-        // GET: api/Movies/5
+        /// <summary>
+        /// Get a single movie by movie id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
@@ -49,7 +59,12 @@ namespace MovieCharactersWebAPI.Controllers
             return movie;
         }
 
-        // PUT: api/Movies/5
+        /// <summary>
+        /// Update a movie.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="movie"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovie(int id, Movie movie)
@@ -80,7 +95,11 @@ namespace MovieCharactersWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Movies
+        /// <summary>
+        /// Add a movie to the database.
+        /// </summary>
+        /// <param name="movie"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
@@ -91,7 +110,11 @@ namespace MovieCharactersWebAPI.Controllers
             return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
         }
 
-        // DELETE: api/Movies/5
+        /// <summary>
+        /// Delete a movie from the database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMovie(int id)
         {
@@ -111,9 +134,12 @@ namespace MovieCharactersWebAPI.Controllers
         {
             return _context.Movie.Any(e => e.Id == id);
         }
-
-        //Nick said that this should be a get - we get error 
-        //and we disagree, because a put is an update right? =)
+        /// <summary>
+        /// Update the characters linked to a single movie. Like when your movie includes Kevin Spacey and you need to do a full recast.
+        /// </summary>
+        /// <param name="id">The id of the movie that is changing characters.</param>
+        /// <param name="characters">The new characters to be added (by character id).</param>
+        /// <returns></returns>
         [HttpPut("{id}/Characters")]
         public async Task<IActionResult> UpdateMovieCharacters(int id, List<int> characters) {
             try {
@@ -122,7 +148,6 @@ namespace MovieCharactersWebAPI.Controllers
                 {
                     return BadRequest("Movie mismatch ID");
                 }
-
                 //Retriving the Movie object we want to update
                 Movie movieToUpdate = await _context.Movie
                .Include(c => c.Characters)
@@ -134,31 +159,25 @@ namespace MovieCharactersWebAPI.Controllers
 
                 //Id in character list sent inn
                 foreach (int Id in characters) {
-
                     //Character object to check for if the character exist 
                     Character existCharacter = await _context.Character.FindAsync(Id);
-
                     //if it does not - return bad request
                     if (existCharacter == null) {
                         return BadRequest();
                     }
                     //if it exist add it the character to newListCharacter
                     newlistCharacter.Add(existCharacter);
-                
                 }
                 //Add the new list to the movie objects character column
                 movieToUpdate.Characters = newlistCharacter;
-
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
                  "Error updating data");
             }
-
             //save the changes to db
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
