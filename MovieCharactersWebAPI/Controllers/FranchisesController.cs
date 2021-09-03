@@ -117,7 +117,7 @@ namespace MovieCharactersWebAPI.Controllers
                 return BadRequest();
             }
             Franchise domainFranchise = _mapper.Map<Franchise>(franchise);
-            _context.Entry(franchise).State = EntityState.Modified;
+            _context.Entry(domainFranchise).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();

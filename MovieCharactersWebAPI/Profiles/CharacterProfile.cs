@@ -13,7 +13,8 @@ namespace MovieCharactersWebAPI.Profiles
     {
         public CharacterProfile()
         {
-            CreateMap<Character, CharacterDTO>();
+            CreateMap<Character, CharacterDTO>().ReverseMap();
+            CreateMap<Character, CharacterDTOCreate>().ReverseMap();
         }
     }
 }

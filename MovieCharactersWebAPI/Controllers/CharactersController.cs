@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCharactersWebAPI.Models;
+using MovieCharactersWebAPI.Models.DTO.CharacterDTO;
 
 namespace MovieCharactersWebAPI.Controllers
 {
@@ -37,9 +38,9 @@ namespace MovieCharactersWebAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Character>>> GetCharacter()
+        public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharacter()
         {
-            return await _context.Character.ToListAsync();
+            return _mapper.Map<List<CharacterDTO>>(await _context.Character.ToListAsync());
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace MovieCharactersWebAPI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Character>> GetCharacter(int id)
+        public async Task<ActionResult<CharacterDTO>> GetCharacter(int id)
         {
             var character = await _context.Character.FindAsync(id);
 
@@ -56,7 +57,7 @@ namespace MovieCharactersWebAPI.Controllers
             {
                 return NotFound();
             }
-            return character;
+            return _mapper.Map<CharacterDTO>(character);
         }
 
         /// <summary>
@@ -67,14 +68,15 @@ namespace MovieCharactersWebAPI.Controllers
         /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCharacter(int id, Character character)
+        public async Task<IActionResult> PutCharacter(int id, CharacterDTO character)
         {
             if (id != character.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(character).State = EntityState.Modified;
+            Character domainCharacter = _mapper.Map<Character>(character);
+            _context.Entry(domainCharacter).State = EntityState.Modified;
 
             try
             {
@@ -102,9 +104,10 @@ namespace MovieCharactersWebAPI.Controllers
         /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Character>> PostCharacter(Character character)
+        public async Task<ActionResult<Character>> PostCharacter(CharacterDTOCreate character)
         {
-            _context.Character.Add(character);
+            Character domainCharacter = _mapper.Map<Character>(character);
+            _context.Character.Add(domainCharacter);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
@@ -123,7 +126,6 @@ namespace MovieCharactersWebAPI.Controllers
             {
                 return NotFound();
             }
-
             _context.Character.Remove(character);
             await _context.SaveChangesAsync();
 
