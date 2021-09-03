@@ -11,7 +11,9 @@ using Microsoft.OpenApi.Models;
 using MovieCharactersWebAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MovieCharactersWebAPI
@@ -34,7 +36,8 @@ namespace MovieCharactersWebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { 
+                c.SwaggerDoc("v1", new OpenApiInfo 
+                { 
                     Title = "MovieCharactersWebAPI", 
                     Version = "v1" ,
                     Description = "A simple example ASP.NET Core Web API",
@@ -44,9 +47,14 @@ namespace MovieCharactersWebAPI
                         Email = string.Empty,
                         Url = new Uri("https://lmgtfy.app/?q=rickroll"),
                     },
-                });
+                }
+                );
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
             
+
             //adding dbcontext for default config on startup
             services.AddDbContext<MovieCharacterDbContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
         }
