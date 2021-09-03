@@ -33,7 +33,7 @@ namespace MovieCharactersWebAPI.Controllers
         }
 
         /// <summary>
-        /// Gets all Franchises in the DTO.
+        /// Gets all Franchises in the database.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
