@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCharactersWebAPI.Models;
+using MovieCharactersWebAPI.Models.DTO;
 
 namespace MovieCharactersWebAPI.Controllers
 {
@@ -26,9 +27,9 @@ namespace MovieCharactersWebAPI.Controllers
 
         // GET: api/Franchises
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchise()
+        public async Task<ActionResult<IEnumerable<FranchiseDTO>>> GetFranchise()
         {
-            return await _context.Franchise.ToListAsync();
+            return _mapper.Map<List<FranchiseDTO>>(await _context.Franchise.ToListAsync());
         }
 
         // GET: api/Franchises/5

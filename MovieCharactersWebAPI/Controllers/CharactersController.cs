@@ -42,7 +42,6 @@ namespace MovieCharactersWebAPI.Controllers
             {
                 return NotFound();
             }
-
             return character;
         }
 
