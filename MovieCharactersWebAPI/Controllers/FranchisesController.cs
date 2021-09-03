@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCharactersWebAPI.Models;
 using MovieCharactersWebAPI.Models.DTO;
+using MovieCharactersWebAPI.Models.DTO.CharacterDTO;
 
 namespace MovieCharactersWebAPI.Controllers
 {
@@ -59,6 +60,48 @@ namespace MovieCharactersWebAPI.Controllers
 
             return franchise;
         }
+
+        /// <summary>
+        /// Gets all the movies from the given franchise.
+        /// </summary>
+        /// <param name="id">The id of the franchise movies should be returned from.</param>
+        /// <returns></returns>
+        [HttpGet("{id}/movies")]
+        public async Task<ActionResult<IEnumerable<MovieDTO>>> GetMoviesInFranchise(int id)
+        {
+            Franchise franchise = await _context.Franchise.Include(f => f.Movies).Where(f => f.Id == id).FirstOrDefaultAsync();
+            List<MovieDTO> movies = _mapper.Map<List<MovieDTO>>(franchise.Movies);
+
+            if (movies == null)
+            {
+                return NotFound();
+            }
+            return Ok(movies);
+        }
+
+        /// <summary>
+        /// Get all the characters belonging to a single franchise.
+        /// </summary>
+        /// <param name="id">The Id of the franchise characters should be returned from.</param>
+        /// <returns></returns>
+        [HttpGet("{id}/Characters")]
+        public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetFranchiseCharacters(int id)
+        {
+            var characters = await _context.Franchise
+                .Where(f => f.Id == id)
+                .SelectMany(f => f.Movies)
+                .SelectMany(m => m.Characters)
+                .Distinct()
+                .ToListAsync();
+            if (characters == null)
+            {
+                return NotFound();
+            }
+            List<CharacterDTO> charactersReturn = _mapper.Map<List<CharacterDTO>>(characters);
+
+            return Ok(charactersReturn);
+        }
+
         /// <summary>
         /// Update a franchise in the database.
         /// </summary>
