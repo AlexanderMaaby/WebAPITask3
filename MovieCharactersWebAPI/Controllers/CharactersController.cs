@@ -11,6 +11,9 @@ using MovieCharactersWebAPI.Models;
 
 namespace MovieCharactersWebAPI.Controllers
 {
+    /// <summary>
+    /// Controller class for Characters.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
@@ -29,14 +32,21 @@ namespace MovieCharactersWebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Characters
+        /// <summary>
+        /// Get all the characters.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Character>>> GetCharacter()
         {
             return await _context.Character.ToListAsync();
         }
 
-        // GET: api/Characters/5
+        /// <summary>
+        /// Get one character by character id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Character>> GetCharacter(int id)
         {
@@ -49,7 +59,12 @@ namespace MovieCharactersWebAPI.Controllers
             return character;
         }
 
-        // PUT: api/Characters/5
+        /// <summary>
+        /// Update character.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="character"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCharacter(int id, Character character)
@@ -80,7 +95,11 @@ namespace MovieCharactersWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Characters
+        /// <summary>
+        /// Add a new character to the database.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Character>> PostCharacter(Character character)
@@ -91,7 +110,11 @@ namespace MovieCharactersWebAPI.Controllers
             return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
         }
 
-        // DELETE: api/Characters/5
+        /// <summary>
+        /// Delete a character from the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
         {
