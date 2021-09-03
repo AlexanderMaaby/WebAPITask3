@@ -110,7 +110,7 @@ namespace MovieCharactersWebAPI.Controllers
             _context.Character.Add(domainCharacter);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCharacter", new { id = character.Id }, character);
+            return CreatedAtAction("GetCharacter", new { id = domainCharacter.Id }, _mapper.Map<CharacterDTO>(character));
         }
 
         /// <summary>
