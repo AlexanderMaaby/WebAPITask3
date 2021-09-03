@@ -15,6 +15,7 @@ namespace MovieCharactersWebAPI.Controllers
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     public class MoviesController : ControllerBase
     {
         private readonly MovieCharacterDbContext _context;
