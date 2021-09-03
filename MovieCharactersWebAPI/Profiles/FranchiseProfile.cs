@@ -12,7 +12,9 @@ namespace MovieCharactersWebAPI.Profiles
     {
         public FranchiseProfile()
         {
-            CreateMap<Franchise, FranchiseDTO>();
+            CreateMap<Franchise, FranchiseDTO>().ReverseMap();
+            CreateMap<Franchise, FranchiseDTOEdit>().ReverseMap();
+            CreateMap<Franchise, FranchiseDTOCreate>().ReverseMap();
         }
     }
 }

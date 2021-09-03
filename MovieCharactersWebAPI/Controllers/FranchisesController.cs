@@ -49,7 +49,7 @@ namespace MovieCharactersWebAPI.Controllers
         /// <param name="id">The Id of the requested franchise.</param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Franchise>> GetFranchise(int id)
+        public async Task<ActionResult<FranchiseDTO>> GetFranchise(int id)
         {
             var franchise = await _context.Franchise.FindAsync(id);
 
@@ -57,8 +57,7 @@ namespace MovieCharactersWebAPI.Controllers
             {
                 return NotFound();
             }
-
-            return franchise;
+            return _mapper.Map<FranchiseDTO>(franchise);
         }
 
         /// <summary>
@@ -110,12 +109,13 @@ namespace MovieCharactersWebAPI.Controllers
         /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFranchise(int id, Franchise franchise)
+        public async Task<IActionResult> PutFranchise(int id, FranchiseDTOEdit franchise)
         {
             if (id != franchise.Id)
             {
                 return BadRequest();
             }
+            Franchise domainFranchise = _mapper.Map<Franchise>(franchise);
             _context.Entry(franchise).State = EntityState.Modified;
             try
             {
@@ -142,12 +142,13 @@ namespace MovieCharactersWebAPI.Controllers
         /// <returns></returns>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
+        public async Task<ActionResult<Franchise>> PostFranchise(FranchiseDTOCreate franchise)
         {
-            _context.Franchise.Add(franchise);
+            Franchise domainFranchise = _mapper.Map<Franchise>(franchise);
+            _context.Franchise.Add(domainFranchise);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFranchise", new { id = franchise.Id }, franchise);
+            return CreatedAtAction("GetFranchise", new { id = domainFranchise.Id }, _mapper.Map<FranchiseDTO>(domainFranchise));
         }
 
         /// <summary>
