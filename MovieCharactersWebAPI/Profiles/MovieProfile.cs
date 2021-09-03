@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MovieCharactersWebAPI.Models;
 using MovieCharactersWebAPI.Models.DTO;
+using MovieCharactersWebAPI.Models.DTO.MovieDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace MovieCharactersWebAPI.Profiles
         public MovieProfile()
         {
             CreateMap<Movie, MovieDTO>();
+            CreateMap<Movie, MovieDTOEdit>();
+            CreateMap<Movie, MovieDTOCreate>();
+            
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MovieCharactersWebAPI.Models.DTO.MovieDTO
+namespace MovieCharactersWebAPI.Models.DTO
 {
-    public class MovieDTO
+    public class MovieDTOEdit
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -13,6 +13,5 @@ namespace MovieCharactersWebAPI.Models.DTO.MovieDTO
         public int ReleaseYear { get; set; }
         public string PictureUrl { get; set; }
         public string TrailerUrl { get; set; }
-
     }
 }
